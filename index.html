@@ -90,7 +90,7 @@ body {
   padding: 8px 0;
 }
 
-/* 用户信息区域 */
+/* 用户信息区域 - 对方已改为垂直布局，此通用样式保留但对方将覆盖 */
 .user-info {
   display: flex;
   flex-direction: column;
@@ -2254,6 +2254,24 @@ input:checked + .slider:before {
   .theme-toggle i {
     font-size: 1rem;
   }
+
+  /* 新增：移动端对方头像区域优化 */
+  #otherUserInfo {
+    width: auto !important;
+    margin-top: 5px !important;
+    gap: 4px !important;
+  }
+  
+  #otherUserInfo .avatar {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  #otherUserInfo .nickname {
+    font-size: 0.7rem !important;
+    padding: 4px 12px !important;
+    margin-top: 4px !important;
+  }
 }
 
 /* 遮罩层 */
@@ -3304,6 +3322,85 @@ input:checked + .slider:before {
 .night-mode .typing-indicator .dot {
   background-color: #e0e0e0 !important;
 }
+
+/* ===== 新增：对方垂直状态卡片样式 ===== */
+.other-status-vertical {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 120px;
+  margin-top: 8px;
+}
+
+.other-status-vertical:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* 夜间模式适配 */
+.night-mode .other-status-vertical {
+  background: rgba(30, 30, 30, 0.6) !important;
+  border-color: rgba(100, 100, 100, 0.3) !important;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .other-status-vertical {
+    padding: 4px 8px !important;
+    max-width: 100px !important;
+    margin-top: 6px !important;
+  }
+  
+  .other-status-vertical span,
+  .other-status-vertical .other-location,
+  .other-status-vertical #otherMoodValue {
+    font-size: 0.7rem !important;
+  }
+  
+  .other-status-vertical .other-location {
+    font-size: 0.7rem !important;
+  }
+  
+  /* 确保聊天头部在移动端不会太拥挤 */
+  .chat-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  /* 调整左右两侧的间距 */
+  #otherUserInfo {
+    margin-right: auto;
+  }
+  
+  /* 右侧按钮组优化 */
+  .theme-toggle, .settings-toggle {
+    width: 32px !important;
+    height: 32px !important;
+  }
+}
+
+/* 超小屏幕优化 */
+@media (max-width: 480px) {
+  .other-status-vertical {
+    max-width: 90px !important;
+    padding: 3px 6px !important;
+  }
+  
+  .other-status-vertical .other-location,
+  .other-status-vertical #otherMoodValue {
+    font-size: 0.65rem !important;
+  }
+  
+  .other-status-vertical span {
+    font-size: 0.6rem !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -3343,18 +3440,39 @@ input:checked + .slider:before {
   
   <!-- 聊天头部 -->
   <div class="chat-header">
-    <!-- 左侧用户信息（对方） - 已删除状态栏和心情指数 -->
-    <div class="user-info" id="otherUserInfo">
-      <div class="avatar" id="otherAvatar">
-        <!-- 白色圆形，无文字无默认图片 -->
+    <!-- 左侧用户信息（对方）- 改为垂直布局，状态卡片移到头像下方 -->
+    <div class="user-info" id="otherUserInfo" style="flex-direction: column; width: auto; align-items: center;">
+      <!-- 头像区域 -->
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <div class="avatar" id="otherAvatar">
+          <!-- 白色圆形，无文字无默认图片 -->
+        </div>
+        <div class="nickname" id="otherNickname">对方</div>
       </div>
-      <div class="status-indicator" id="otherStatusIndicator" style="display: none;"></div>
-      <div class="status-text" id="otherStatusText" style="display: none;">在DR</div>
-      <div class="mood-percentage" id="otherMoodPercentage" style="display: none;">
-        <span style="font-size:0.6rem; margin-right:2px;">心情指数:</span>
-        <span id="otherMoodValue">85%</span>
+      
+      <!-- 状态卡片 - 移到头像下方 -->
+      <div class="other-status-vertical" id="otherStatusCard" style="display: flex; flex-direction: column; align-items: center;">
+        <!-- 位置状态 -->
+        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%;">
+          <span style="font-size: 0.65rem; color: var(--text); opacity: 0.8;">位置</span>
+          <span class="other-location" id="otherLocationText" style="font-size: 0.75rem; font-weight: 500; color: var(--accent);">在DR</span>
+        </div>
+        <!-- 分隔线 -->
+        <div style="width: 80%; height: 1px; background: rgba(255,255,255,0.2); margin: 4px 0;"></div>
+        <!-- 心情指数 -->
+        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%;">
+          <span style="font-size: 0.65rem; color: var(--text); opacity: 0.8;">心情</span>
+          <div class="other-mood" style="display: flex; align-items: center; gap: 2px;">
+            <span id="otherMoodValue" style="font-size: 0.8rem; font-weight: 600; color: var(--accent);">85</span>
+            <span style="font-size: 0.6rem;">%</span>
+          </div>
+        </div>
       </div>
-      <div class="nickname" id="otherNickname">对方</div>
+      
+      <!-- 隐藏原有元素（通过内联样式覆盖） -->
+      <div class="status-indicator" id="otherStatusIndicator" style="display: none !important;"></div>
+      <div class="status-text" id="otherStatusText" style="display: none !important;">在DR</div>
+      <div class="mood-percentage" id="otherMoodPercentage" style="display: none !important;"></div>
     </div>
     
     <!-- 中间标题 - 恋爱天数已移除 -->
@@ -4631,7 +4749,8 @@ class ChatApp {
             currentPlayingMusic: null,
             musicCurrentTime: 0,
             editingUserType: null,
-            editingGroupMemberIndex: -1  // 当前编辑的群成员索引
+            editingGroupMemberIndex: -1,  // 当前编辑的群成员索引
+            otherStatusTimer: null // 新增：对方状态随机变化定时器
         };
         
         // 常量定义
@@ -4897,30 +5016,33 @@ class ChatApp {
         // 4. 启动所有定时器
         this.startAllTimers();
         
-        // 5. 设置事件监听器
+        // 5. 启动对方状态随机变化
+        this.startOtherStatusRandomChanges();
+        
+        // 6. 设置事件监听器
         this.setupEventListeners();
         
-        // 6. 显示加载成功通知
+        // 7. 显示加载成功通知
         this.showNotification('聊天记录已加载');
         
-        // 7. 自动保存定时器（每30秒）
+        // 8. 自动保存定时器（每30秒）
         setInterval(() => {
             this.saveAllData();
         }, 30000);
         
-        // 8. 页面关闭前保存
+        // 9. 页面关闭前保存
         window.addEventListener('beforeunload', () => {
             this.saveAllData();
         });
         
-        // 9. 页面可见性变化时保存
+        // 10. 页面可见性变化时保存
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'hidden') {
                 this.saveAllData();
             }
         });
         
-        // 10. 恢复夜间模式状态
+        // 11. 恢复夜间模式状态
         const savedNightMode = localStorage.getItem('night_mode_enabled');
         if (savedNightMode === 'true') {
             document.documentElement.classList.add('night-mode');
@@ -5360,10 +5482,13 @@ class ChatApp {
         
         const otherMoodValue = document.getElementById('otherMoodValue');
         if (otherMoodValue) {
-            otherMoodValue.textContent = `${this.appData.otherInfo?.mood || 85}%`;
+            otherMoodValue.textContent = `${this.appData.otherInfo?.mood || 85}`;
         }
         
         this.updateOtherStatusIndicator();
+        // 新增：更新位置和心情颜色
+        this.updateOtherLocationUI(this.appData.otherInfo?.status || '在DR');
+        this.updateOtherMoodUI(this.appData.otherInfo?.mood || 85);
     }
     
     renderAppearance() {
@@ -5844,7 +5969,7 @@ class ChatApp {
     // ========================
     
     startAllTimers() {
-        this.startStatusSwitching();
+        // this.startStatusSwitching(); // 注释掉或删除这行，因为已经用新的随机方法替代
         this.startMoodChanging();
         this.startAutoSending();
         this.startActiveCallScheduler();
@@ -9052,6 +9177,101 @@ generatePokeReply() {
     const randomSuffix = phrases[Math.floor(Math.random() * phrases.length)];
     this.sendPokeMessage('other', randomSuffix); // 注意 sender='other' 不会再次触发回复
 }
+
+    // ========================
+    // 新增对方状态随机变化方法
+    // ========================
+    startOtherStatusRandomChanges() {
+        // 清除已有的定时器
+        if (this.appData.otherStatusTimer) {
+            clearTimeout(this.appData.otherStatusTimer);
+        }
+        
+        const scheduleNextChange = () => {
+            // 随机生成下一次变化的时间（2秒到4小时之间）
+            const minDelay = 2000; // 2秒
+            const maxDelay = 4 * 60 * 60 * 1000; // 4小时
+            const nextDelay = minDelay + Math.random() * (maxDelay - minDelay);
+            
+            this.appData.otherStatusTimer = setTimeout(() => {
+                this.randomlyChangeOtherStatus();
+                scheduleNextChange(); // 递归调用，实现持续随机变化
+            }, nextDelay);
+        };
+        
+        scheduleNextChange();
+    }
+
+    // 随机改变对方的位置状态和心情
+    randomlyChangeOtherStatus() {
+        // 位置状态选项
+        const locationOptions = ['在DR', '在CR', '在线', '在忙', '在我身边'];
+        
+        // 随机选择新的位置
+        const newLocation = locationOptions[Math.floor(Math.random() * locationOptions.length)];
+        
+        // 随机生成新的心情指数（0-100）
+        const newMood = Math.floor(Math.random() * 101);
+        
+        // 更新数据
+        if (this.appData.otherInfo) {
+            this.appData.otherInfo.status = newLocation;
+            this.appData.otherInfo.mood = newMood;
+            
+            // 更新UI
+            this.updateOtherLocationUI(newLocation);
+            this.updateOtherMoodUI(newMood);
+            
+            // 保存数据
+            this.saveAllData();
+        }
+    }
+
+    // 更新对方位置UI
+    updateOtherLocationUI(location) {
+        const locationEl = document.getElementById('otherLocationText');
+        if (locationEl) {
+            locationEl.textContent = location;
+            
+            // 根据位置改变颜色
+            switch(location) {
+                case '在DR':
+                    locationEl.style.color = '#2196f3';
+                    break;
+                case '在CR':
+                    locationEl.style.color = '#9c27b0';
+                    break;
+                case '在线':
+                    locationEl.style.color = '#4caf50';
+                    break;
+                case '在忙':
+                    locationEl.style.color = '#ff9800';
+                    break;
+                case '在我身边':
+                    locationEl.style.color = '#ff5722';
+                    break;
+                default:
+                    locationEl.style.color = 'var(--accent)';
+            }
+        }
+    }
+
+    // 更新对方心情UI
+    updateOtherMoodUI(mood) {
+        const moodEl = document.getElementById('otherMoodValue');
+        if (moodEl) {
+            moodEl.textContent = mood;
+            
+            // 根据心情值改变颜色
+            if (mood >= 80) {
+                moodEl.style.color = '#4caf50'; // 绿色 - 心情好
+            } else if (mood >= 50) {
+                moodEl.style.color = '#ff9800'; // 橙色 - 一般
+            } else {
+                moodEl.style.color = '#f44336'; // 红色 - 心情差
+            }
+        }
+    }
 }
 
 // ========================
