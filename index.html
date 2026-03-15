@@ -3337,6 +3337,23 @@ input:checked + .slider:before {
   margin-top: 8px;
 }
 
+/* 设置卡片内所有文字的默认颜色为聊天气泡颜色 */
+.other-status-vertical span,
+.other-status-vertical .other-location,
+.other-status-vertical #otherMoodValue {
+  color: #6f7b86 !important;
+}
+
+/* 标签文字稍微淡一点 */
+.other-status-vertical span:first-child {
+  opacity: 0.7;
+}
+
+/* 分隔线颜色调整 */
+.other-status-vertical div[style*="width: 80%; height: 1px;"] {
+  background: rgba(111, 123, 134, 0.2) !important;
+}
+
 .other-status-vertical:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
@@ -3347,6 +3364,21 @@ input:checked + .slider:before {
 .night-mode .other-status-vertical {
   background: rgba(30, 30, 30, 0.6) !important;
   border-color: rgba(100, 100, 100, 0.3) !important;
+}
+
+/* 夜间模式下的状态卡片文字颜色 */
+.night-mode .other-status-vertical span,
+.night-mode .other-status-vertical .other-location,
+.night-mode .other-status-vertical #otherMoodValue {
+  color: #e0e0e0 !important;
+}
+
+.night-mode .other-status-vertical span:first-child {
+  opacity: 0.6;
+}
+
+.night-mode .other-status-vertical div[style*="width: 80%; height: 1px;"] {
+  background: rgba(224, 224, 224, 0.2) !important;
 }
 
 /* 移动端优化 */
@@ -3361,10 +3393,18 @@ input:checked + .slider:before {
   .other-status-vertical .other-location,
   .other-status-vertical #otherMoodValue {
     font-size: 0.7rem !important;
+    color: #6f7b86 !important;
   }
   
   .other-status-vertical .other-location {
     font-size: 0.7rem !important;
+  }
+  
+  /* 移动端夜间模式下的颜色 */
+  .night-mode .other-status-vertical span,
+  .night-mode .other-status-vertical .other-location,
+  .night-mode .other-status-vertical #otherMoodValue {
+    color: #e0e0e0 !important;
   }
   
   /* 确保聊天头部在移动端不会太拥挤 */
@@ -3395,12 +3435,60 @@ input:checked + .slider:before {
   .other-status-vertical .other-location,
   .other-status-vertical #otherMoodValue {
     font-size: 0.65rem !important;
+    color: #6f7b86 !important;
   }
   
   .other-status-vertical span {
     font-size: 0.6rem !important;
+    color: #6f7b86 !important;
+  }
+  
+  /* 超小屏幕夜间模式 */
+  .night-mode .other-status-vertical .other-location,
+  .night-mode .other-status-vertical #otherMoodValue,
+  .night-mode .other-status-vertical span {
+    color: #e0e0e0 !important;
   }
 }
+
+/* ===== 新增：随机变化设置样式 ===== */
+.random-controls {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.random-item {
+  margin-bottom: 16px;
+}
+
+.random-item:last-child {
+  margin-bottom: 0;
+}
+
+.random-value {
+  font-weight: 500;
+  color: var(--accent);
+}
+
+/* 夜间模式下的随机变化设置 */
+.night-mode .random-controls {
+  background: rgba(20, 20, 20, 0.9) !important;
+  border: 1px solid #222 !important;
+}
+
+.night-mode .random-value {
+  color: #b3a6b5 !important;
+}
+
+.night-mode .random-item select,
+.night-mode .random-item input {
+  background: rgba(30, 30, 30, 0.9) !important;
+  color: #e0e0e0 !important;
+  border-color: #333 !important;
+}
+/* ===== 随机变化设置样式结束 ===== */
 </style>
 </head>
 <body>
@@ -3451,23 +3539,23 @@ input:checked + .slider:before {
       </div>
       
       <!-- 状态卡片 - 移到头像下方 -->
-      <div class="other-status-vertical" id="otherStatusCard" style="display: flex; flex-direction: column; align-items: center;">
-        <!-- 位置状态 -->
-        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%;">
-          <span style="font-size: 0.65rem; color: var(--text); opacity: 0.8;">位置</span>
-          <span class="other-location" id="otherLocationText" style="font-size: 0.75rem; font-weight: 500; color: var(--accent);">在DR</span>
-        </div>
-        <!-- 分隔线 -->
-        <div style="width: 80%; height: 1px; background: rgba(255,255,255,0.2); margin: 4px 0;"></div>
-        <!-- 心情指数 -->
-        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%;">
-          <span style="font-size: 0.65rem; color: var(--text); opacity: 0.8;">心情</span>
-          <div class="other-mood" style="display: flex; align-items: center; gap: 2px;">
-            <span id="otherMoodValue" style="font-size: 0.8rem; font-weight: 600; color: var(--accent);">85</span>
-            <span style="font-size: 0.6rem;">%</span>
-          </div>
-        </div>
-      </div>
+<div class="other-status-vertical" id="otherStatusCard" style="display: flex; flex-direction: column; align-items: center;">
+  <!-- 位置状态 -->
+  <div style="display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%;">
+    <span style="font-size: 0.65rem; opacity: 0.8;">位置</span>
+    <span class="other-location" id="otherLocationText" style="font-size: 0.75rem; font-weight: 500;">在DR</span>
+  </div>
+  <!-- 分隔线 -->
+  <div style="width: 80%; height: 1px; margin: 4px 0;"></div>
+  <!-- 心情指数 -->
+  <div style="display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%;">
+    <span style="font-size: 0.65rem; opacity: 0.8;">心情</span>
+    <div class="other-mood" style="display: flex; align-items: center; gap: 2px;">
+      <span id="otherMoodValue" style="font-size: 0.8rem; font-weight: 600;">85</span>
+      <span style="font-size: 0.6rem;">%</span>
+    </div>
+  </div>
+</div>
       
       <!-- 隐藏原有元素（通过内联样式覆盖） -->
       <div class="status-indicator" id="otherStatusIndicator" style="display: none !important;"></div>
@@ -3566,6 +3654,8 @@ input:checked + .slider:before {
     <button class="tab-button" data-tab="music">音乐播放</button>
     <!-- 新增拍一拍设置标签 -->
     <button class="tab-button" data-tab="poke">👋 拍一拍设置</button>
+    <!-- 新增随机变化标签 -->
+    <button class="tab-button" data-tab="random">🔄 随机变化</button>
     <button class="tab-button" data-tab="data">数据管理</button>
   </div>
   
@@ -3717,7 +3807,7 @@ input:checked + .slider:before {
       </div>
     </div>
     
-    <!-- 外观设置模块 -->
+    <!-- 外观设置模块（已移除心情变化频率） -->
     <div class="settings-section-card" id="section-appearance" data-tab="appearance">
       <div class="settings-section-header collapsed" onclick="toggleSection('appearance')">
         <span>🎨 外观设置</span>
@@ -3740,16 +3830,6 @@ input:checked + .slider:before {
               <input type="number" class="date-input" id="loveMonth" placeholder="月" min="1" max="12" value="1">
               <input type="number" class="date-input" id="loveDay" placeholder="日" min="1" max="31" value="1">
             </div>
-          </div>
-          <div class="appearance-item">
-            <label class="appearance-label">对方心情变化频率:</label>
-            <select class="appearance-input" id="moodChangeFrequency">
-              <option value="60000">1分钟</option>
-              <option value="300000">5分钟</option>
-              <option value="600000" selected>10分钟</option>
-              <option value="1200000">20分钟</option>
-              <option value="1800000">30分钟</option>
-            </select>
           </div>
         </div>
         <button class="save-phrases-btn" id="saveAppearanceBtn">保存外观设置</button>
@@ -4016,6 +4096,63 @@ input:checked + .slider:before {
     </div>
     <!-- ===== 拍一拍设置模块结束 ===== -->
     
+    <!-- ===== 新增：随机变化设置模块 ===== -->
+    <div class="settings-section-card" id="section-random" data-tab="random">
+      <div class="settings-section-header collapsed" onclick="toggleSection('random')">
+        <span>🔄 随机变化设置</span>
+        <i class="material-icons" id="icon-random">expand_more</i>
+      </div>
+      <div class="settings-section-content collapsed" id="content-random">
+        <p>设置对方位置和心情随机变化的时间范围</p>
+        <div class="random-controls" style="background: rgba(255,255,255,0.5); border-radius:10px; padding:16px;">
+          
+          <!-- 最短时间设置 -->
+          <div class="random-item" style="margin-bottom:20px;">
+            <div class="ratio-label">
+              <span>最短变化间隔</span>
+              <span class="random-value" id="minRandomValue">2秒</span>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center; margin-top: 8px;">
+              <input type="range" min="1" max="60" value="2" class="ratio-slider" id="minRandomSlider" style="flex: 2;">
+              <input type="number" min="1" max="60" value="2" class="date-input" id="minRandomInput" style="width: 60px;">
+              <select class="max-count-select" id="minRandomUnit" style="width: 70px;">
+                <option value="1">秒</option>
+                <option value="60">分钟</option>
+                <option value="3600">小时</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- 最长时间设置 -->
+          <div class="random-item" style="margin-bottom:20px;">
+            <div class="ratio-label">
+              <span>最长变化间隔</span>
+              <span class="random-value" id="maxRandomValue">4小时</span>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center; margin-top: 8px;">
+              <input type="range" min="1" max="24" value="4" class="ratio-slider" id="maxRandomSlider" style="flex: 2;">
+              <input type="number" min="1" max="24" value="4" class="date-input" id="maxRandomInput" style="width: 60px;">
+              <select class="max-count-select" id="maxRandomUnit" style="width: 70px;">
+                <option value="1">秒</option>
+                <option value="60">分钟</option>
+                <option value="3600" selected>小时</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- 预览区域 -->
+          <div class="active-call-preview" style="margin-top: 20px;">
+            <p><strong>当前设置预览：</strong></p>
+            <p>• 对方位置和心情将在 <span id="randomPreviewMin">2秒</span> 到 <span id="randomPreviewMax">4小时</span> 之间随机变化</p>
+            <p>• 平均每天变化约 <span id="randomPreviewDaily">6-12</span> 次</p>
+          </div>
+          
+        </div>
+        <button class="save-phrases-btn" id="saveRandomSettingsBtn" style="margin-top:10px;">保存随机变化设置</button>
+      </div>
+    </div>
+    <!-- ===== 随机变化设置模块结束 ===== -->
+    
     <!-- ===== 数据管理模块（已删除消息推送，已删除标题图标） ===== -->
     <div class="settings-section-card" id="section-data" data-tab="data">
       <div class="settings-section-header collapsed" onclick="toggleSection('data')">
@@ -4108,6 +4245,8 @@ class ChatDataManager {
         this.GROUP_SETTINGS_KEY = 'seven_and_wish_group_settings';
         // 新增拍一拍设置存储键
         this.POKE_SETTINGS_KEY = 'seven_and_wish_poke_settings';
+        // 新增随机变化设置存储键
+        this.RANDOM_SETTINGS_KEY = 'seven_and_wish_random_settings';
         
         // 版本控制
         this.DATA_VERSION_KEY = 'seven_and_wish_data_version';
@@ -4174,8 +4313,7 @@ class ChatDataManager {
         this.setStoredData(this.APPEARANCE_KEY, {
             appTitle: '梦角爱人',
             appSubtitle: '绝对私密的一对一聊天空间',
-            loveStartDate: new Date(2024, 0, 1).toISOString(),
-            moodChangeFrequency: 600000
+            loveStartDate: new Date(2024, 0, 1).toISOString()
         });
         
         // 默认背景设置
@@ -4230,11 +4368,19 @@ class ChatDataManager {
         });
 
         // 默认拍一拍设置
-this.setStoredData(this.POKE_SETTINGS_KEY, {
-    enabled: true,
-    frequency: 50,  // 把 20 改成 50 更容易测试
-    phrases: ["拍了拍你", "拍了拍我的肩膀", "拍了拍我的脑袋", "戳了戳我", "轻轻碰了碰我", "摸了摸我的头", "捏了捏我的脸"]
-});
+        this.setStoredData(this.POKE_SETTINGS_KEY, {
+            enabled: true,
+            frequency: 50,
+            phrases: ["拍了拍你", "拍了拍我的肩膀", "拍了拍我的脑袋", "戳了戳我", "轻轻碰了碰我", "摸了摸我的头", "捏了捏我的脸"]
+        });
+        
+        // 默认随机变化设置
+        this.setStoredData(this.RANDOM_SETTINGS_KEY, {
+            minValue: 2,
+            minUnit: 1,
+            maxValue: 4,
+            maxUnit: 3600
+        });
         
         // 默认回复词条
         this.setStoredData(this.PHRASES_KEY, [
@@ -4523,8 +4669,7 @@ this.setStoredData(this.POKE_SETTINGS_KEY, {
         return data || {
             appTitle: '梦角爱人',
             appSubtitle: '绝对私密的一对一聊天空间',
-            loveStartDate: new Date(2024, 0, 1),
-            moodChangeFrequency: 600000
+            loveStartDate: new Date(2024, 0, 1)
         };
     }
     
@@ -4646,6 +4791,20 @@ this.setStoredData(this.POKE_SETTINGS_KEY, {
         return this.setStoredData(this.POKE_SETTINGS_KEY, settings);
     }
     
+    // ---- 随机变化设置 ----
+    getRandomSettings() {
+        return this.getStoredData(this.RANDOM_SETTINGS_KEY) || {
+            minValue: 2,
+            minUnit: 1,
+            maxValue: 4,
+            maxUnit: 3600
+        };
+    }
+    
+    saveRandomSettings(settings) {
+        return this.setStoredData(this.RANDOM_SETTINGS_KEY, settings);
+    }
+    
     // ---- 恋爱天数 ----
     getLoveDays() {
         return this.getStoredData(this.LOVE_DAYS_KEY) || 1;
@@ -4728,6 +4887,8 @@ class ChatApp {
             // 新增拍一拍设置
             pokeSettings: null,
             pokeTimer: null,
+            // 新增随机变化设置
+            randomSettings: null,
             
             // 运行时状态
             isTyping: false,
@@ -4862,6 +5023,9 @@ class ChatApp {
         // 加载拍一拍设置
         this.appData.pokeSettings = this.dataManager.getPokeSettings();
         
+        // 加载随机变化设置
+        this.appData.randomSettings = this.dataManager.getRandomSettings();
+        
         // 加载已抽取塔罗牌记录（Set）
         this.appData.drawnCards = this.dataManager.getDrawnCards();
         
@@ -4952,6 +5116,9 @@ class ChatApp {
         
         // 保存拍一拍设置
         this.dataManager.savePokeSettings(this.appData.pokeSettings);
+        
+        // 保存随机变化设置
+        this.dataManager.saveRandomSettings(this.appData.randomSettings);
         
         // 保存已抽取塔罗牌记录
         this.dataManager.saveDrawnCards(this.appData.drawnCards);
@@ -5092,6 +5259,7 @@ class ChatApp {
         this.initActiveCallSettingsUI();
         this.initMusicSettingsUI();
         this.renderPokeUI(); // 新增拍一拍UI
+        this.renderRandomUI(); // 新增随机变化UI
         
         this.updateStickerCount();
         this.updatePhraseCount();
@@ -5754,7 +5922,6 @@ class ChatApp {
         const loveYear = document.getElementById('loveYear');
         const loveMonth = document.getElementById('loveMonth');
         const loveDay = document.getElementById('loveDay');
-        const moodChangeFrequency = document.getElementById('moodChangeFrequency');
         
         if (appTitleInput && this.appData.appearanceSettings) {
             appTitleInput.value = this.appData.appearanceSettings.appTitle || '梦角爱人';
@@ -5768,10 +5935,6 @@ class ChatApp {
             if (loveYear) loveYear.value = date.getFullYear();
             if (loveMonth) loveMonth.value = date.getMonth() + 1;
             if (loveDay) loveDay.value = date.getDate();
-        }
-        
-        if (moodChangeFrequency && this.appData.appearanceSettings) {
-            moodChangeFrequency.value = this.appData.appearanceSettings.moodChangeFrequency || 600000;
         }
     }
     
@@ -5969,57 +6132,16 @@ class ChatApp {
     // ========================
     
     startAllTimers() {
-        // this.startStatusSwitching(); // 注释掉或删除这行，因为已经用新的随机方法替代
-        this.startMoodChanging();
+        // 移除心情变化定时器
+        // this.startMoodChanging();
         this.startAutoSending();
         this.startActiveCallScheduler();
         this.startMusicScheduler();
         this.startPokeScheduler(); // 新增拍一拍定时器
     }
     
-    startStatusSwitching() {
-        if (this.appData.statusTimer) clearTimeout(this.appData.statusTimer);
-        
-        const switchStatus = () => {
-            if (Math.random() > 0.3) {
-                const timeIndex = Math.floor(Math.random() * this.statusChangeTimes.length);
-                const nextTime = this.statusChangeTimes[timeIndex];
-                this.appData.statusTimer = setTimeout(switchStatus, nextTime * 1000);
-                return;
-            }
-            
-            let newStatus;
-            do {
-                const randomIndex = Math.floor(Math.random() * this.statusOptions.length);
-                newStatus = this.statusOptions[randomIndex];
-            } while (newStatus.text === this.appData.otherInfo?.status);
-            
-            if (this.appData.otherInfo) {
-                this.appData.otherInfo.status = newStatus.text;
-                this.renderUserInfo();
-                this.saveAllData();
-            }
-            
-            const timeIndex = Math.floor(Math.random() * this.statusChangeTimes.length);
-            const nextTime = this.statusChangeTimes[timeIndex];
-            this.appData.statusTimer = setTimeout(switchStatus, nextTime * 1000);
-        };
-        
-        setTimeout(switchStatus, 10000);
-    }
-    
     startMoodChanging() {
-        if (this.appData.moodTimer) clearInterval(this.appData.moodTimer);
-        
-        const frequency = this.appData.appearanceSettings?.moodChangeFrequency || 600000;
-        this.appData.moodTimer = setInterval(() => {
-            if (this.appData.otherInfo) {
-                const change = Math.floor(Math.random() * 21) - 10;
-                this.appData.otherInfo.mood = Math.max(0, Math.min(100, (this.appData.otherInfo.mood || 85) + change));
-                this.renderUserInfo();
-                this.saveAllData();
-            }
-        }, frequency);
+        // 这个方法不再使用，保留为空方法避免错误
     }
     
     startAutoSending() {
@@ -6759,14 +6881,12 @@ class ChatApp {
         const loveYear = document.getElementById('loveYear');
         const loveMonth = document.getElementById('loveMonth');
         const loveDay = document.getElementById('loveDay');
-        const moodChangeFrequency = document.getElementById('moodChangeFrequency');
         
         if (!this.appData.appearanceSettings) {
             this.appData.appearanceSettings = {
                 appTitle: '梦角爱人',
                 appSubtitle: '绝对私密的一对一聊天空间',
-                loveStartDate: new Date(2024, 0, 1),
-                moodChangeFrequency: 600000
+                loveStartDate: new Date(2024, 0, 1)
             };
         }
         
@@ -6779,13 +6899,6 @@ class ChatApp {
             const day = parseInt(loveDay.value) || 1;
             this.appData.appearanceSettings.loveStartDate = new Date(year, month, day);
         }
-        
-        if (moodChangeFrequency) {
-            this.appData.appearanceSettings.moodChangeFrequency = parseInt(moodChangeFrequency.value) || 600000;
-        }
-        
-        clearInterval(this.appData.moodTimer);
-        this.startMoodChanging();
         
         this.calculateLoveDays();
         this.renderAppearance();
@@ -7759,6 +7872,7 @@ class ChatApp {
             groupSettings: this.appData.groupSettings,
             musicSettings: this.appData.musicSettings,
             pokeSettings: this.appData.pokeSettings, // 新增拍一拍设置
+            randomSettings: this.appData.randomSettings, // 新增随机变化设置
             drawnCards: Array.from(this.appData.drawnCards || []),
             loveDays: this.appData.loveDays,
             readNoReplyMessageIds: this.appData.readNoReplyMessageIds,
@@ -7852,7 +7966,8 @@ class ChatApp {
                                 if (backup.appData.communicationSettings) this.appData.communicationSettings = backup.appData.communicationSettings;
                                 if (backup.appData.groupSettings) this.appData.groupSettings = backup.appData.groupSettings;
                                 if (backup.appData.musicSettings) this.appData.musicSettings = backup.appData.musicSettings;
-                                if (backup.appData.pokeSettings) this.appData.pokeSettings = backup.appData.pokeSettings; // 新增拍一拍
+                                if (backup.appData.pokeSettings) this.appData.pokeSettings = backup.appData.pokeSettings;
+                                if (backup.appData.randomSettings) this.appData.randomSettings = backup.appData.randomSettings;
                                 if (backup.appData.loveDays) this.appData.loveDays = backup.appData.loveDays;
                                 if (backup.appData.readNoReplyMessageIds) this.appData.readNoReplyMessageIds = backup.appData.readNoReplyMessageIds;
                                 if (backup.appData.drawnCards && Array.isArray(backup.appData.drawnCards)) {
@@ -8328,6 +8443,9 @@ class ChatApp {
         if (pokeTextarea) {
             pokeTextarea.addEventListener('input', () => this.updatePokePhraseCount());
         }
+        
+        // ===== 新增：随机变化设置监听 =====
+        this.setupRandomSettingsListeners();
         
         // 数据管理初始化
         this.initDataManagement();
@@ -8952,29 +9070,28 @@ class ChatApp {
     }
 
     savePokeSettings() {
-    const toggle = document.getElementById('pokeEnableToggle');
-    const slider = document.getElementById('pokeFrequencySlider');
-    const textarea = document.getElementById('pokePhrasesTextarea');
+        const toggle = document.getElementById('pokeEnableToggle');
+        const slider = document.getElementById('pokeFrequencySlider');
+        const textarea = document.getElementById('pokePhrasesTextarea');
 
-    if (!this.appData.pokeSettings) {
-        this.appData.pokeSettings = { enabled: true, frequency: 20, phrases: [] };
+        if (!this.appData.pokeSettings) {
+            this.appData.pokeSettings = { enabled: true, frequency: 20, phrases: [] };
+        }
+
+        if (toggle) this.appData.pokeSettings.enabled = toggle.checked;
+        if (slider) this.appData.pokeSettings.frequency = parseInt(slider.value);
+
+        const text = textarea.value.trim();
+        const phrases = text ? text.split('\n').map(p => p.trim()).filter(p => p) : [];
+        this.appData.pokeSettings.phrases = phrases.length ? phrases : ["拍了拍你"]; // 保证至少一条
+
+        this.saveAllData();
+        this.showNotification('拍一拍设置已保存');
+        this.updatePokePhraseCount();
+        this.restartPokeScheduler(); // 重启定时器
+        
+        console.log('拍一拍设置已保存:', this.appData.pokeSettings);
     }
-
-    if (toggle) this.appData.pokeSettings.enabled = toggle.checked;
-    if (slider) this.appData.pokeSettings.frequency = parseInt(slider.value);
-
-    const text = textarea.value.trim();
-    const phrases = text ? text.split('\n').map(p => p.trim()).filter(p => p) : [];
-    this.appData.pokeSettings.phrases = phrases.length ? phrases : ["拍了拍你"]; // 保证至少一条
-
-    this.saveAllData();
-    this.showNotification('拍一拍设置已保存');
-    this.updatePokePhraseCount();
-    this.restartPokeScheduler(); // 重启定时器
-    
-    // 添加这一行调试日志
-    console.log('拍一拍设置已保存:', this.appData.pokeSettings);
-}
 
     restartPokeScheduler() {
         if (this.appData.pokeTimer) {
@@ -8985,201 +9102,417 @@ class ChatApp {
     }
 
     startPokeScheduler() {
-    const settings = this.appData.pokeSettings;
-    if (!settings || !settings.enabled || settings.frequency <= 0) return;
+        const settings = this.appData.pokeSettings;
+        if (!settings || !settings.enabled || settings.frequency <= 0) return;
 
-    // 临时改为 30秒，便于测试
-    const baseInterval = 10000; // 30秒（测试用，之后可改回300000）
+        // 临时改为 30秒，便于测试
+        const baseInterval = 10000; // 30秒（测试用，之后可改回300000）
 
-    if (this.appData.pokeTimer) {
-        clearInterval(this.appData.pokeTimer);
-    }
-    
-    this.appData.pokeTimer = setInterval(() => {
-        if (Math.random() * 100 < settings.frequency) {
-            console.log('触发对方拍一拍，频率:', settings.frequency);
-            this.sendRandomPokeFromOther();
+        if (this.appData.pokeTimer) {
+            clearInterval(this.appData.pokeTimer);
         }
-    }, baseInterval);
-}
+        
+        this.appData.pokeTimer = setInterval(() => {
+            if (Math.random() * 100 < settings.frequency) {
+                console.log('触发对方拍一拍，频率:', settings.frequency);
+                this.sendRandomPokeFromOther();
+            }
+        }, baseInterval);
+    }
 
     sendRandomPokeFromOther() {
-    const phrases = this.appData.pokeSettings?.phrases;
-    if (!phrases || phrases.length === 0) {
-        console.log('没有拍一拍文案');
-        return;
-    }
-
-    const randomSuffix = phrases[Math.floor(Math.random() * phrases.length)];
-    console.log('发送拍一拍:', randomSuffix); // 添加日志
-    this.sendPokeMessage('other', randomSuffix);
-}
-
-    sendPokeMessage(sender = 'self', suffix = null) {
-    // 如果没有提供后缀，从文案库随机选一条
-    if (!suffix) {
         const phrases = this.appData.pokeSettings?.phrases;
         if (!phrases || phrases.length === 0) {
-            suffix = "拍了拍你"; // 默认
-        } else {
-            suffix = phrases[Math.floor(Math.random() * phrases.length)];
-        }
-    }
-
-    // 构建显示文本：直接使用后缀（去除首尾空格）
-    const displayText = suffix.trim();
-
-    // 根据发送者确定完整的拍一拍文案
-    let fullText = '';
-    if (sender === 'self') {
-        const myName = this.appData.selfInfo?.nickname || '我';
-        fullText = `${myName} ${displayText}`;
-    } else {
-        const otherName = this.appData.otherInfo?.nickname || '对方';
-        fullText = `${otherName} ${displayText}`;
-    }
-
-    // 创建拍一拍消息对象 - 使用 type: 'poke'，不要用 isPoke
-    const pokeMessage = {
-        id: this.dataManager.generateMessageId(),
-        type: 'poke',           // ← 保持这个
-        text: fullText,          // ← 使用完整文案
-        sender: sender,
-        time: this.getCurrentTime(),
-        read: true
-        // 不要加 isPoke 属性
-    };
-
-    this.appData.messages.push(pokeMessage);
-    this.renderMessages();
-    this.saveAllData();
-
-    // 如果是自己发送拍一拍，触发对方回复（按比例 字卡80% 表情包10% 拍一拍10%）
-    if (sender === 'self') {
-        this.triggerReplyAfterPoke();
-    }
-}
-
-// ========================
-// 新增：用户发送拍一拍后触发对方回复（字卡40% 表情包30% 拍一拍30%）
-// ========================
-triggerReplyAfterPoke() {
-    // 显示对方正在输入
-    this.appData.waitingForReply = true;
-    this.startTypingIndicator();
-
-    const minDelay = (this.appData.sendSettings?.minReplyDelay || 1.5) * 1000;
-    const maxDelay = (this.appData.sendSettings?.maxReplyDelay || 3.5) * 1000;
-    const delay = minDelay + Math.random() * (maxDelay - minDelay);
-
-    setTimeout(() => {
-        this.stopTypingIndicator();
-
-        // 检查资源可用性
-        let hasPhrase = this.appData.responsePhrases?.length > 0;
-        let hasSticker = this.appData.stickers?.length > 0;
-        let hasPoke = this.appData.pokeSettings?.enabled && this.appData.pokeSettings.phrases?.length > 0;
-
-        // 如果某种资源缺失，重新分配剩余类型的比例
-        let phraseProb = hasPhrase ? 80 : 0;
-        let stickerProb = hasSticker ? 10 : 0;
-        let pokeProb = hasPoke ? 10 : 0;
-
-        // 重新归一化（避免总和为0）
-        const total = phraseProb + stickerProb + pokeProb;
-        if (total === 0) {
-            // 什么都没有，就不回复了
+            console.log('没有拍一拍文案');
             return;
         }
 
-        const rand = Math.random() * total;
-        if (rand < phraseProb) {
-            // 普通词条
-            this.generatePhraseReply();
-        } else if (rand < phraseProb + stickerProb) {
-            // 表情包
-            this.generateStickerReply();
+        const randomSuffix = phrases[Math.floor(Math.random() * phrases.length)];
+        console.log('发送拍一拍:', randomSuffix); // 添加日志
+        this.sendPokeMessage('other', randomSuffix);
+    }
+
+    sendPokeMessage(sender = 'self', suffix = null) {
+        // 如果没有提供后缀，从文案库随机选一条
+        if (!suffix) {
+            const phrases = this.appData.pokeSettings?.phrases;
+            if (!phrases || phrases.length === 0) {
+                suffix = "拍了拍你"; // 默认
+            } else {
+                suffix = phrases[Math.floor(Math.random() * phrases.length)];
+            }
+        }
+
+        // 构建显示文本：直接使用后缀（去除首尾空格）
+        const displayText = suffix.trim();
+
+        // 根据发送者确定完整的拍一拍文案
+        let fullText = '';
+        if (sender === 'self') {
+            const myName = this.appData.selfInfo?.nickname || '我';
+            fullText = `${myName} ${displayText}`;
         } else {
-            // 拍一拍
-            this.generatePokeReply();
+            const otherName = this.appData.otherInfo?.nickname || '对方';
+            fullText = `${otherName} ${displayText}`;
         }
-    }, delay);
-}
 
-// 新增：生成一条对方发送的普通词条消息
-generatePhraseReply() {
-    if (!this.appData.responsePhrases || this.appData.responsePhrases.length === 0) {
-        // 如果没有普通词条，降级为表情包或拍一拍
-        if (this.appData.stickers?.length > 0) {
-            this.generateStickerReply();
-        } else if (this.appData.pokeSettings?.enabled && this.appData.pokeSettings.phrases?.length > 0) {
-            this.generatePokeReply();
+        // 创建拍一拍消息对象 - 使用 type: 'poke'，不要用 isPoke
+        const pokeMessage = {
+            id: this.dataManager.generateMessageId(),
+            type: 'poke',           // ← 保持这个
+            text: fullText,          // ← 使用完整文案
+            sender: sender,
+            time: this.getCurrentTime(),
+            read: true
+            // 不要加 isPoke 属性
+        };
+
+        this.appData.messages.push(pokeMessage);
+        this.renderMessages();
+        this.saveAllData();
+
+        // 如果是自己发送拍一拍，触发对方回复（按比例 字卡80% 表情包10% 拍一拍10%）
+        if (sender === 'self') {
+            this.triggerReplyAfterPoke();
         }
-        return;
     }
-
-    const randomPhrase = this.appData.responsePhrases[Math.floor(Math.random() * this.appData.responsePhrases.length)];
-    const phraseMessage = {
-        id: this.dataManager.generateMessageId(),
-        text: randomPhrase,
-        sender: 'other',
-        time: this.getCurrentTime(),
-        read: true
-    };
-
-    this.appData.messages.push(phraseMessage);
-    this.renderMessages();
-    this.saveAllData();
-    this.showNotification('对方回复了一条消息');
-}
-
-// 生成一条对方发送的表情包消息
-generateStickerReply() {
-    if (!this.appData.stickers || this.appData.stickers.length === 0) {
-        // 如果没有表情包，降级为拍一拍（如果有）或字卡
-        if (this.appData.pokeSettings?.enabled && this.appData.pokeSettings.phrases?.length > 0) {
-            this.generatePokeReply();
-        } else if (this.appData.tarotSettings?.enabled && this.appData.tarotSettings.customPhrases?.length > 0) {
-            this.generateTarotReply('reply');
-        }
-        return;
-    }
-
-    const randomSticker = this.appData.stickers[Math.floor(Math.random() * this.appData.stickers.length)];
-    const stickerMessage = {
-        id: this.dataManager.generateMessageId(),
-        isSticker: true,
-        stickerData: randomSticker.data,
-        sender: 'other',
-        time: this.getCurrentTime(),
-        read: true
-    };
-
-    this.appData.messages.push(stickerMessage);
-    this.renderMessages();
-    this.saveAllData();
-    this.showNotification('对方发送了一个表情包');
-}
-
-// 生成一条对方发送的拍一拍消息
-generatePokeReply() {
-    const phrases = this.appData.pokeSettings?.phrases;
-    if (!phrases || phrases.length === 0) {
-        // 如果没有拍一拍文案，降级为字卡或表情包
-        if (this.appData.tarotSettings?.enabled && this.appData.tarotSettings.customPhrases?.length > 0) {
-            this.generateTarotReply('reply');
-        } else if (this.appData.stickers?.length > 0) {
-            this.generateStickerReply();
-        }
-        return;
-    }
-
-    const randomSuffix = phrases[Math.floor(Math.random() * phrases.length)];
-    this.sendPokeMessage('other', randomSuffix); // 注意 sender='other' 不会再次触发回复
-}
 
     // ========================
-    // 新增对方状态随机变化方法
+    // 新增：用户发送拍一拍后触发对方回复（字卡40% 表情包30% 拍一拍30%）
+    // ========================
+    triggerReplyAfterPoke() {
+        // 显示对方正在输入
+        this.appData.waitingForReply = true;
+        this.startTypingIndicator();
+
+        const minDelay = (this.appData.sendSettings?.minReplyDelay || 1.5) * 1000;
+        const maxDelay = (this.appData.sendSettings?.maxReplyDelay || 3.5) * 1000;
+        const delay = minDelay + Math.random() * (maxDelay - minDelay);
+
+        setTimeout(() => {
+            this.stopTypingIndicator();
+
+            // 检查资源可用性
+            let hasPhrase = this.appData.responsePhrases?.length > 0;
+            let hasSticker = this.appData.stickers?.length > 0;
+            let hasPoke = this.appData.pokeSettings?.enabled && this.appData.pokeSettings.phrases?.length > 0;
+
+            // 如果某种资源缺失，重新分配剩余类型的比例
+            let phraseProb = hasPhrase ? 80 : 0;
+            let stickerProb = hasSticker ? 10 : 0;
+            let pokeProb = hasPoke ? 10 : 0;
+
+            // 重新归一化（避免总和为0）
+            const total = phraseProb + stickerProb + pokeProb;
+            if (total === 0) {
+                // 什么都没有，就不回复了
+                return;
+            }
+
+            const rand = Math.random() * total;
+            if (rand < phraseProb) {
+                // 普通词条
+                this.generatePhraseReply();
+            } else if (rand < phraseProb + stickerProb) {
+                // 表情包
+                this.generateStickerReply();
+            } else {
+                // 拍一拍
+                this.generatePokeReply();
+            }
+        }, delay);
+    }
+
+    // 新增：生成一条对方发送的普通词条消息
+    generatePhraseReply() {
+        if (!this.appData.responsePhrases || this.appData.responsePhrases.length === 0) {
+            // 如果没有普通词条，降级为表情包或拍一拍
+            if (this.appData.stickers?.length > 0) {
+                this.generateStickerReply();
+            } else if (this.appData.pokeSettings?.enabled && this.appData.pokeSettings.phrases?.length > 0) {
+                this.generatePokeReply();
+            }
+            return;
+        }
+
+        const randomPhrase = this.appData.responsePhrases[Math.floor(Math.random() * this.appData.responsePhrases.length)];
+        const phraseMessage = {
+            id: this.dataManager.generateMessageId(),
+            text: randomPhrase,
+            sender: 'other',
+            time: this.getCurrentTime(),
+            read: true
+        };
+
+        this.appData.messages.push(phraseMessage);
+        this.renderMessages();
+        this.saveAllData();
+        this.showNotification('对方回复了一条消息');
+    }
+
+    // 生成一条对方发送的表情包消息
+    generateStickerReply() {
+        if (!this.appData.stickers || this.appData.stickers.length === 0) {
+            // 如果没有表情包，降级为拍一拍（如果有）或字卡
+            if (this.appData.pokeSettings?.enabled && this.appData.pokeSettings.phrases?.length > 0) {
+                this.generatePokeReply();
+            } else if (this.appData.tarotSettings?.enabled && this.appData.tarotSettings.customPhrases?.length > 0) {
+                this.generateTarotReply('reply');
+            }
+            return;
+        }
+
+        const randomSticker = this.appData.stickers[Math.floor(Math.random() * this.appData.stickers.length)];
+        const stickerMessage = {
+            id: this.dataManager.generateMessageId(),
+            isSticker: true,
+            stickerData: randomSticker.data,
+            sender: 'other',
+            time: this.getCurrentTime(),
+            read: true
+        };
+
+        this.appData.messages.push(stickerMessage);
+        this.renderMessages();
+        this.saveAllData();
+        this.showNotification('对方发送了一个表情包');
+    }
+
+    // 生成一条对方发送的拍一拍消息
+    generatePokeReply() {
+        const phrases = this.appData.pokeSettings?.phrases;
+        if (!phrases || phrases.length === 0) {
+            // 如果没有拍一拍文案，降级为字卡或表情包
+            if (this.appData.tarotSettings?.enabled && this.appData.tarotSettings.customPhrases?.length > 0) {
+                this.generateTarotReply('reply');
+            } else if (this.appData.stickers?.length > 0) {
+                this.generateStickerReply();
+            }
+            return;
+        }
+
+        const randomSuffix = phrases[Math.floor(Math.random() * phrases.length)];
+        this.sendPokeMessage('other', randomSuffix); // 注意 sender='other' 不会再次触发回复
+    }
+
+    // ========================
+    // 新增随机变化设置方法
+    // ========================
+    
+    /**
+     * 渲染随机变化UI
+     */
+    renderRandomUI() {
+        const minSlider = document.getElementById('minRandomSlider');
+        const minInput = document.getElementById('minRandomInput');
+        const minUnit = document.getElementById('minRandomUnit');
+        const minValue = document.getElementById('minRandomValue');
+        const maxSlider = document.getElementById('maxRandomSlider');
+        const maxInput = document.getElementById('maxRandomInput');
+        const maxUnit = document.getElementById('maxRandomUnit');
+        const maxValue = document.getElementById('maxRandomValue');
+        
+        if (!minSlider || !maxSlider) return;
+        
+        const settings = this.appData.randomSettings || { 
+            minValue: 2, minUnit: 1, 
+            maxValue: 4, maxUnit: 3600 
+        };
+        
+        // 设置最小值
+        minSlider.value = settings.minValue;
+        minInput.value = settings.minValue;
+        minUnit.value = settings.minUnit;
+        this.updateMinRandomDisplay();
+        
+        // 设置最大值
+        maxSlider.value = settings.maxValue;
+        maxInput.value = settings.maxValue;
+        maxUnit.value = settings.maxUnit;
+        this.updateMaxRandomDisplay();
+        
+        this.updateRandomPreview();
+    }
+
+    /**
+     * 设置随机变化监听器
+     */
+    setupRandomSettingsListeners() {
+        const minSlider = document.getElementById('minRandomSlider');
+        const minInput = document.getElementById('minRandomInput');
+        const minUnit = document.getElementById('minRandomUnit');
+        const maxSlider = document.getElementById('maxRandomSlider');
+        const maxInput = document.getElementById('maxRandomInput');
+        const maxUnit = document.getElementById('maxRandomUnit');
+        const saveBtn = document.getElementById('saveRandomSettingsBtn');
+        
+        if (minSlider) {
+            minSlider.addEventListener('input', () => {
+                minInput.value = minSlider.value;
+                this.updateMinRandomDisplay();
+                this.updateRandomPreview();
+            });
+        }
+        
+        if (minInput) {
+            minInput.addEventListener('input', () => {
+                let val = parseInt(minInput.value) || 1;
+                if (val < 1) val = 1;
+                if (val > 60) val = 60;
+                minInput.value = val;
+                minSlider.value = val;
+                this.updateMinRandomDisplay();
+                this.updateRandomPreview();
+            });
+        }
+        
+        if (minUnit) {
+            minUnit.addEventListener('change', () => {
+                this.updateMinRandomDisplay();
+                this.updateRandomPreview();
+            });
+        }
+        
+        if (maxSlider) {
+            maxSlider.addEventListener('input', () => {
+                maxInput.value = maxSlider.value;
+                this.updateMaxRandomDisplay();
+                this.updateRandomPreview();
+            });
+        }
+        
+        if (maxInput) {
+            maxInput.addEventListener('input', () => {
+                let val = parseInt(maxInput.value) || 1;
+                if (val < 1) val = 1;
+                if (val > 24) val = 24;
+                maxInput.value = val;
+                maxSlider.value = val;
+                this.updateMaxRandomDisplay();
+                this.updateRandomPreview();
+            });
+        }
+        
+        if (maxUnit) {
+            maxUnit.addEventListener('change', () => {
+                this.updateMaxRandomDisplay();
+                this.updateRandomPreview();
+            });
+        }
+        
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => this.saveRandomSettings());
+        }
+    }
+
+    /**
+     * 更新最小随机时间显示
+     */
+    updateMinRandomDisplay() {
+        const val = document.getElementById('minRandomInput').value;
+        const unit = document.getElementById('minRandomUnit').value;
+        const display = document.getElementById('minRandomValue');
+        
+        let unitText = '秒';
+        if (unit == 60) unitText = '分钟';
+        if (unit == 3600) unitText = '小时';
+        
+        display.textContent = `${val}${unitText}`;
+    }
+
+    /**
+     * 更新最大随机时间显示
+     */
+    updateMaxRandomDisplay() {
+        const val = document.getElementById('maxRandomInput').value;
+        const unit = document.getElementById('maxRandomUnit').value;
+        const display = document.getElementById('maxRandomValue');
+        
+        let unitText = '秒';
+        if (unit == 60) unitText = '分钟';
+        if (unit == 3600) unitText = '小时';
+        
+        display.textContent = `${val}${unitText}`;
+    }
+
+    /**
+     * 更新随机变化预览
+     */
+    updateRandomPreview() {
+        const minVal = parseInt(document.getElementById('minRandomInput').value) || 2;
+        const minUnit = parseInt(document.getElementById('minRandomUnit').value) || 1;
+        const maxVal = parseInt(document.getElementById('maxRandomInput').value) || 4;
+        const maxUnit = parseInt(document.getElementById('maxRandomUnit').value) || 3600;
+        
+        const minSeconds = minVal * minUnit;
+        const maxSeconds = maxVal * maxUnit;
+        
+        // 计算每天大概变化次数
+        const daySeconds = 24 * 60 * 60;
+        const avgSeconds = (minSeconds + maxSeconds) / 2;
+        const dailyCount = Math.round(daySeconds / avgSeconds);
+        
+        const minDisplay = document.getElementById('randomPreviewMin');
+        const maxDisplay = document.getElementById('randomPreviewMax');
+        const dailyDisplay = document.getElementById('randomPreviewDaily');
+        
+        if (minDisplay) {
+            let unitText = '秒';
+            if (minUnit == 60) unitText = '分钟';
+            if (minUnit == 3600) unitText = '小时';
+            minDisplay.textContent = `${minVal}${unitText}`;
+        }
+        
+        if (maxDisplay) {
+            let unitText = '秒';
+            if (maxUnit == 60) unitText = '分钟';
+            if (maxUnit == 3600) unitText = '小时';
+            maxDisplay.textContent = `${maxVal}${unitText}`;
+        }
+        
+        if (dailyDisplay) {
+            dailyDisplay.textContent = `${dailyCount-2}-${dailyCount+2}`;
+        }
+    }
+
+    /**
+     * 保存随机变化设置
+     */
+    saveRandomSettings() {
+        const minVal = parseInt(document.getElementById('minRandomInput').value) || 2;
+        const minUnit = parseInt(document.getElementById('minRandomUnit').value) || 1;
+        const maxVal = parseInt(document.getElementById('maxRandomInput').value) || 4;
+        const maxUnit = parseInt(document.getElementById('maxRandomUnit').value) || 3600;
+        
+        if (!this.appData.randomSettings) {
+            this.appData.randomSettings = {};
+        }
+        
+        this.appData.randomSettings = {
+            minValue: minVal,
+            minUnit: minUnit,
+            maxValue: maxVal,
+            maxUnit: maxUnit
+        };
+        
+        this.saveAllData();
+        this.showNotification('随机变化设置已保存');
+        this.restartOtherStatusRandomChanges(); // 重启随机变化定时器
+    }
+
+    /**
+     * 重启对方状态随机变化定时器
+     */
+    restartOtherStatusRandomChanges() {
+        if (this.appData.otherStatusTimer) {
+            clearTimeout(this.appData.otherStatusTimer);
+            this.appData.otherStatusTimer = null;
+        }
+        this.startOtherStatusRandomChanges();
+    }
+
+    // ========================
+    // 新增对方状态随机变化方法（修改版，使用自定义设置）
     // ========================
     startOtherStatusRandomChanges() {
         // 清除已有的定时器
@@ -9188,9 +9521,17 @@ generatePokeReply() {
         }
         
         const scheduleNextChange = () => {
-            // 随机生成下一次变化的时间（2秒到4小时之间）
-            const minDelay = 2000; // 2秒
-            const maxDelay = 4 * 60 * 60 * 1000; // 4小时
+            // 获取自定义设置
+            const settings = this.appData.randomSettings || { 
+                minValue: 2, minUnit: 1, 
+                maxValue: 4, maxUnit: 3600 
+            };
+            
+            // 计算最小和最大延迟（毫秒）
+            const minDelay = settings.minValue * settings.minUnit * 1000;
+            const maxDelay = settings.maxValue * settings.maxUnit * 1000;
+            
+            // 随机生成下一次变化的时间
             const nextDelay = minDelay + Math.random() * (maxDelay - minDelay);
             
             this.appData.otherStatusTimer = setTimeout(() => {
@@ -9232,27 +9573,7 @@ generatePokeReply() {
         const locationEl = document.getElementById('otherLocationText');
         if (locationEl) {
             locationEl.textContent = location;
-            
-            // 根据位置改变颜色
-            switch(location) {
-                case '在DR':
-                    locationEl.style.color = '#2196f3';
-                    break;
-                case '在CR':
-                    locationEl.style.color = '#9c27b0';
-                    break;
-                case '在线':
-                    locationEl.style.color = '#4caf50';
-                    break;
-                case '在忙':
-                    locationEl.style.color = '#ff9800';
-                    break;
-                case '在我身边':
-                    locationEl.style.color = '#ff5722';
-                    break;
-                default:
-                    locationEl.style.color = 'var(--accent)';
-            }
+            // 移除动态颜色设置，让CSS统一控制
         }
     }
 
@@ -9261,15 +9582,7 @@ generatePokeReply() {
         const moodEl = document.getElementById('otherMoodValue');
         if (moodEl) {
             moodEl.textContent = mood;
-            
-            // 根据心情值改变颜色
-            if (mood >= 80) {
-                moodEl.style.color = '#4caf50'; // 绿色 - 心情好
-            } else if (mood >= 50) {
-                moodEl.style.color = '#ff9800'; // 橙色 - 一般
-            } else {
-                moodEl.style.color = '#f44336'; // 红色 - 心情差
-            }
+            // 移除动态颜色设置，让CSS统一控制
         }
     }
 }
