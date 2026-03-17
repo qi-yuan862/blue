@@ -3506,15 +3506,7 @@ input:checked + .slider:before {
     flex: 1;
 }
 
-/* URL测试按钮特殊样式 */
-#testMusicUrlBtn {
-    background: var(--accent-gray) !important;
-    color: white;
-}
 
-#testMusicUrlBtn:hover {
-    background: var(--accent-gray-light) !important;
-}
 </style>
 </head>
 <body>
@@ -4055,22 +4047,19 @@ input:checked + .slider:before {
             </div>
 
             <!-- 新增：通过URL添加歌曲区域 -->
-            <div class="music-item" style="margin-top: 20px;">
-              <label class="communication-label">通过URL添加歌曲:</label>
-              <div style="display: flex; gap: 8px; margin-bottom: 10px;">
-                <input type="text" id="musicUrlInput" class="appearance-input" placeholder="输入歌曲URL（支持mp3等音频格式）" style="flex: 2;">
-                <input type="text" id="musicUrlNameInput" class="appearance-input" placeholder="歌曲名称" style="flex: 1;">
-              </div>
-              <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                <button class="add-sticker-btn" id="addMusicUrlBtn" style="margin-bottom: 0; flex: 1;">
-                  <i class="material-icons" style="font-size: 1rem;">link</i> 添加URL歌曲
-                </button>
-                <button class="add-sticker-btn" id="testMusicUrlBtn" style="margin-bottom: 0; flex: 1; background: var(--accent-gray) !important;">
-                  <i class="material-icons" style="font-size: 1rem;">play_circle</i> 测试播放
-                </button>
-              </div>
-              <p style="font-size:0.75rem; color:#888; margin-top: 5px;">提示：URL必须是直接可访问的音频文件链接（如.mp3, .wav等），测试播放可以验证链接是否有效。</p>
-            </div>
+<div class="music-item" style="margin-top: 20px;">
+    <label class="communication-label">通过URL添加歌曲:</label>
+    <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+        <input type="text" id="musicUrlInput" class="appearance-input" placeholder="输入歌曲URL（支持mp3等音频格式）" style="flex: 2;">
+        <input type="text" id="musicUrlNameInput" class="appearance-input" placeholder="歌曲名称" style="flex: 1;">
+    </div>
+    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+        <button class="add-sticker-btn" id="addMusicUrlBtn" style="margin-bottom: 0; flex: 1;">
+            <i class="material-icons" style="font-size: 1rem;">link</i> 添加URL歌曲
+        </button>
+    </div>
+    <p style="font-size:0.75rem; color:#888; margin-top: 5px;">提示：URL必须是直接可访问的音频文件链接（如.mp3, .wav等）。</p>
+</div>
 
             <div class="music-item">
               <label class="communication-label">音乐库管理:</label>
@@ -8465,11 +8454,7 @@ class ChatApp {
             addMusicUrlBtn.addEventListener('click', () => this.addMusicByUrl());
         }
 
-        // 新增：测试URL按钮
-        const testMusicUrlBtn = document.getElementById('testMusicUrlBtn');
-        if (testMusicUrlBtn) {
-            testMusicUrlBtn.addEventListener('click', () => this.testMusicUrl());
-        }
+        
 
         // 新增：回车键支持（在URL输入框按回车添加）
         const musicUrlInput = document.getElementById('musicUrlInput');
@@ -8742,60 +8727,7 @@ class ChatApp {
         this.showNotification(`已添加歌曲: ${songName}`);
     }
 
-    /**
-     * 测试URL歌曲播放
-     */
-    testMusicUrl() {
-        const urlInput = document.getElementById('musicUrlInput');
-        const url = urlInput.value.trim();
-        
-        if (!url) {
-            this.showNotification('请输入要测试的URL');
-            return;
-        }
-        
-        if (!url.match(/^https?:\/\/.+/)) {
-            this.showNotification('请输入有效的HTTP/HTTPS URL');
-            return;
-        }
-        
-        // 创建临时音频对象进行测试
-        const audio = new Audio();
-        
-        // 设置超时
-        const timeout = setTimeout(() => {
-            this.showNotification('测试超时，URL可能无法访问', 'error');
-            audio.src = '';
-        }, 5000);
-        
-        // 监听可以播放的事件
-        audio.addEventListener('canplaythrough', () => {
-            clearTimeout(timeout);
-            this.showNotification('✓ URL有效，可以播放');
-            audio.src = '';
-        });
-        
-        // 监听错误事件
-        audio.addEventListener('error', (e) => {
-            clearTimeout(timeout);
-            let errorMsg = '无法加载音频';
-            if (audio.error) {
-                switch (audio.error.code) {
-                    case 1: errorMsg = '用户中止了加载'; break;
-                    case 2: errorMsg = '网络错误，无法加载'; break;
-                    case 3: errorMsg = '解码错误，可能不是有效的音频文件'; break;
-                    case 4: errorMsg = 'URL无效或格式不支持'; break;
-                    default: errorMsg = '未知错误';
-                }
-            }
-            this.showNotification(`测试失败：${errorMsg}`, 'error');
-            audio.src = '';
-        });
-        
-        // 尝试加载音频
-        audio.src = url;
-        audio.load();
-    }
+    
     
     handleMusicUpload(e) {
         const files = e.target.files;
