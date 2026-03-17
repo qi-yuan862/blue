@@ -3489,6 +3489,32 @@ input:checked + .slider:before {
   border-color: #333 !important;
 }
 /* ===== 随机变化设置样式结束 ===== */
+
+/* ===== URL歌曲图标特殊样式 ===== */
+.music-item-icon.url-music {
+    background: linear-gradient(135deg, #4a90e2, #357abd) !important;
+}
+
+/* URL输入区域样式 */
+.music-url-input-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.music-url-input-group input {
+    flex: 1;
+}
+
+/* URL测试按钮特殊样式 */
+#testMusicUrlBtn {
+    background: var(--accent-gray) !important;
+    color: white;
+}
+
+#testMusicUrlBtn:hover {
+    background: var(--accent-gray-light) !important;
+}
 </style>
 </head>
 <body>
@@ -4009,7 +4035,7 @@ input:checked + .slider:before {
       </div>
     </div>
     
-    <!-- 音乐播放模块 -->
+    <!-- 音乐播放模块 - 已添加URL输入功能 -->
     <div class="settings-section-card" id="section-music" data-tab="music">
       <div class="settings-section-header collapsed" onclick="toggleSection('music')">
         <span>🎵 音乐播放器</span>
@@ -4017,7 +4043,7 @@ input:checked + .slider:before {
       </div>
       <div class="settings-section-content collapsed" id="content-music">
         <div class="music-library">
-          <p>上传音频文件，对方可以随机播放或主动发起听歌</p>
+          <p>上传音频文件或通过URL添加歌曲，对方可以随机播放或主动发起听歌</p>
           <div class="music-controls">
             <div class="music-item">
               <label class="communication-label">上传音乐文件:</label>
@@ -4027,6 +4053,25 @@ input:checked + .slider:before {
               </div>
               <input type="file" id="musicUpload" class="hidden-file-input" accept="audio/*">
             </div>
+
+            <!-- 新增：通过URL添加歌曲区域 -->
+            <div class="music-item" style="margin-top: 20px;">
+              <label class="communication-label">通过URL添加歌曲:</label>
+              <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                <input type="text" id="musicUrlInput" class="appearance-input" placeholder="输入歌曲URL（支持mp3等音频格式）" style="flex: 2;">
+                <input type="text" id="musicUrlNameInput" class="appearance-input" placeholder="歌曲名称" style="flex: 1;">
+              </div>
+              <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <button class="add-sticker-btn" id="addMusicUrlBtn" style="margin-bottom: 0; flex: 1;">
+                  <i class="material-icons" style="font-size: 1rem;">link</i> 添加URL歌曲
+                </button>
+                <button class="add-sticker-btn" id="testMusicUrlBtn" style="margin-bottom: 0; flex: 1; background: var(--accent-gray) !important;">
+                  <i class="material-icons" style="font-size: 1rem;">play_circle</i> 测试播放
+                </button>
+              </div>
+              <p style="font-size:0.75rem; color:#888; margin-top: 5px;">提示：URL必须是直接可访问的音频文件链接（如.mp3, .wav等），测试播放可以验证链接是否有效。</p>
+            </div>
+
             <div class="music-item">
               <label class="communication-label">音乐库管理:</label>
               <div class="music-list" id="musicList"></div>
@@ -4359,9 +4404,9 @@ class ChatDataManager {
             members: []
         });
         
-        // 默认音乐设置
+        // 默认音乐设置 - 支持URL歌曲
         this.setStoredData(this.MUSIC_SETTINGS_KEY, {
-            musicList: [],
+            musicList: [],          // 同时存储本地文件和URL歌曲
             autoPlayMusic: true,
             musicFrequency: 30,
             playMode: 'random'
@@ -8414,6 +8459,39 @@ class ChatApp {
             musicUpload.addEventListener('change', (e) => this.handleMusicUpload(e));
         }
         
+        // 新增：URL歌曲添加按钮
+        const addMusicUrlBtn = document.getElementById('addMusicUrlBtn');
+        if (addMusicUrlBtn) {
+            addMusicUrlBtn.addEventListener('click', () => this.addMusicByUrl());
+        }
+
+        // 新增：测试URL按钮
+        const testMusicUrlBtn = document.getElementById('testMusicUrlBtn');
+        if (testMusicUrlBtn) {
+            testMusicUrlBtn.addEventListener('click', () => this.testMusicUrl());
+        }
+
+        // 新增：回车键支持（在URL输入框按回车添加）
+        const musicUrlInput = document.getElementById('musicUrlInput');
+        if (musicUrlInput) {
+            musicUrlInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.addMusicByUrl();
+                }
+            });
+        }
+
+        const musicUrlNameInput = document.getElementById('musicUrlNameInput');
+        if (musicUrlNameInput) {
+            musicUrlNameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.addMusicByUrl();
+                }
+            });
+        }
+        
         const musicFrequencySlider = document.getElementById('musicFrequencySlider');
         if (musicFrequencySlider) {
             musicFrequencySlider.addEventListener('input', (e) => {
@@ -8522,7 +8600,7 @@ class ChatApp {
     }
     
     // ========================
-    // 音乐播放器功能
+    // 音乐播放器功能 - 已修改支持URL歌曲
     // ========================
     
     initMusicSettingsUI() {
@@ -8557,7 +8635,7 @@ class ChatApp {
         const musicList = this.appData.musicSettings.musicList || [];
         
         if (musicList.length === 0) {
-            musicListEl.innerHTML = '<div class="music-empty"><i class="material-icons">library_music</i><span>暂无音乐，请上传音频文件</span></div>';
+            musicListEl.innerHTML = '<div class="music-empty"><i class="material-icons">library_music</i><span>暂无音乐，请上传音频文件或添加URL歌曲</span></div>';
             return;
         }
         
@@ -8565,11 +8643,20 @@ class ChatApp {
         musicList.forEach((music, index) => {
             const musicCard = document.createElement('div');
             musicCard.className = 'music-item-card';
-            const size = music.size ? (music.size / 1024 / 1024).toFixed(2) + 'MB' : '未知大小';
+            
+            // 判断歌曲类型，显示不同的图标和大小信息
+            const isUrlMusic = music.type === 'url';
+            const icon = isUrlMusic ? 'link' : 'music_note';
+            const sizeText = isUrlMusic ? 'URL歌曲' : (music.size ? (music.size / 1024 / 1024).toFixed(2) + 'MB' : '未知大小');
             
             musicCard.innerHTML = `
-                <div class="music-item-icon"><i class="material-icons">music_note</i></div>
-                <div class="music-item-info"><div class="music-item-name">${music.name || '未知歌曲'}</div><div class="music-item-size">${size}</div></div>
+                <div class="music-item-icon" style="background: ${isUrlMusic ? 'linear-gradient(135deg, #4a90e2, #357abd)' : 'linear-gradient(135deg, #a99cad, #8a7f8d)'};">
+                    <i class="material-icons">${icon}</i>
+                </div>
+                <div class="music-item-info">
+                    <div class="music-item-name">${music.name || '未知歌曲'}</div>
+                    <div class="music-item-size">${sizeText}</div>
+                </div>
                 <div class="music-item-actions">
                     <button class="music-item-play" data-index="${index}"><i class="material-icons">play_arrow</i>播放</button>
                     <button class="music-item-delete" data-index="${index}"><i class="material-icons">delete</i></button>
@@ -8581,6 +8668,133 @@ class ChatApp {
             
             musicListEl.appendChild(musicCard);
         });
+    }
+    
+    /**
+     * 通过URL添加歌曲
+     */
+    addMusicByUrl() {
+        const urlInput = document.getElementById('musicUrlInput');
+        const nameInput = document.getElementById('musicUrlNameInput');
+        
+        const url = urlInput.value.trim();
+        const name = nameInput.value.trim();
+        
+        if (!url) {
+            this.showNotification('请输入歌曲URL');
+            return;
+        }
+        
+        // 简单的URL验证
+        if (!url.match(/^https?:\/\/.+/)) {
+            this.showNotification('请输入有效的HTTP/HTTPS URL');
+            return;
+        }
+        
+        // 检查是否支持音频格式（简单检查文件扩展名）
+        const audioExtensions = ['.mp3', '.wav', '.ogg', '.m4a', '.aac', '.flac', '.webm'];
+        const hasValidExtension = audioExtensions.some(ext => url.toLowerCase().endsWith(ext));
+        if (!hasValidExtension) {
+            if (!confirm('URL可能不是音频文件，确定要继续添加吗？')) {
+                return;
+            }
+        }
+        
+        // 生成歌曲名称
+        let songName = name;
+        if (!songName) {
+            // 从URL中提取文件名
+            const urlParts = url.split('/');
+            const lastPart = urlParts[urlParts.length - 1];
+            songName = lastPart.split('?')[0] || '未知歌曲';
+            // 移除文件扩展名
+            songName = songName.replace(/\.[^/.]+$/, '');
+        }
+        
+        // 创建音乐数据对象
+        const musicData = {
+            id: Date.now() + Math.random(),
+            name: songName,
+            data: url,                    // 直接存储URL字符串
+            size: 0,                       // URL歌曲大小为0
+            type: 'url',                   // 标记为URL类型
+            url: url,                      // 额外存储URL
+            addedTime: new Date().toISOString()
+        };
+        
+        // 添加到音乐列表
+        if (!this.appData.musicSettings) {
+            this.appData.musicSettings = { musicList: [] };
+        }
+        if (!this.appData.musicSettings.musicList) {
+            this.appData.musicSettings.musicList = [];
+        }
+        
+        this.appData.musicSettings.musicList.push(musicData);
+        
+        // 清空输入框
+        urlInput.value = '';
+        nameInput.value = '';
+        
+        // 重新渲染音乐列表
+        this.renderMusicList();
+        this.saveAllData();
+        this.showNotification(`已添加歌曲: ${songName}`);
+    }
+
+    /**
+     * 测试URL歌曲播放
+     */
+    testMusicUrl() {
+        const urlInput = document.getElementById('musicUrlInput');
+        const url = urlInput.value.trim();
+        
+        if (!url) {
+            this.showNotification('请输入要测试的URL');
+            return;
+        }
+        
+        if (!url.match(/^https?:\/\/.+/)) {
+            this.showNotification('请输入有效的HTTP/HTTPS URL');
+            return;
+        }
+        
+        // 创建临时音频对象进行测试
+        const audio = new Audio();
+        
+        // 设置超时
+        const timeout = setTimeout(() => {
+            this.showNotification('测试超时，URL可能无法访问', 'error');
+            audio.src = '';
+        }, 5000);
+        
+        // 监听可以播放的事件
+        audio.addEventListener('canplaythrough', () => {
+            clearTimeout(timeout);
+            this.showNotification('✓ URL有效，可以播放');
+            audio.src = '';
+        });
+        
+        // 监听错误事件
+        audio.addEventListener('error', (e) => {
+            clearTimeout(timeout);
+            let errorMsg = '无法加载音频';
+            if (audio.error) {
+                switch (audio.error.code) {
+                    case 1: errorMsg = '用户中止了加载'; break;
+                    case 2: errorMsg = '网络错误，无法加载'; break;
+                    case 3: errorMsg = '解码错误，可能不是有效的音频文件'; break;
+                    case 4: errorMsg = 'URL无效或格式不支持'; break;
+                    default: errorMsg = '未知错误';
+                }
+            }
+            this.showNotification(`测试失败：${errorMsg}`, 'error');
+            audio.src = '';
+        });
+        
+        // 尝试加载音频
+        audio.src = url;
+        audio.load();
     }
     
     handleMusicUpload(e) {
@@ -8620,13 +8834,19 @@ class ChatApp {
     
     deleteMusic(index) {
         if (!this.appData.musicSettings?.musicList) return;
-        const musicName = this.appData.musicSettings.musicList[index]?.name;
-        if (confirm(`确定要删除《${musicName}》吗？`)) {
+        const music = this.appData.musicSettings.musicList[index];
+        if (!music) return;
+        
+        const musicType = music.type === 'url' ? 'URL歌曲' : '本地歌曲';
+        if (confirm(`确定要删除${musicType}《${music.name}》吗？`)) {
             this.appData.musicSettings.musicList.splice(index, 1);
             this.renderMusicList();
             this.saveAllData();
-            this.showNotification(`已删除歌曲: ${musicName}`);
-            if (this.appData.activeMusicPlayer && this.appData.currentPlayingMusic?.id === this.appData.musicSettings.musicList[index]?.id) {
+            this.showNotification(`已删除歌曲: ${music.name}`);
+            
+            // 如果当前正在播放这首歌，关闭播放器
+            if (this.appData.activeMusicPlayer && 
+                this.appData.currentPlayingMusic?.id === music.id) {
                 this.closeMusicPlayer();
             }
         }
@@ -8696,14 +8916,46 @@ class ChatApp {
     }
     
     initMusicAudio(music) {
-        if (!music || !music.data) return;
+        if (!music) return;
+        
+        // 获取音频源
+        let audioSrc;
+        if (music.type === 'url') {
+            audioSrc = music.url || music.data;  // URL歌曲
+        } else {
+            audioSrc = music.data;                // 本地文件
+        }
+        
+        if (!audioSrc) return;
+        
         if (this.appData.musicAudio) {
             this.appData.musicAudio.pause();
             this.appData.musicAudio = null;
         }
         
-        const audio = new Audio(music.data);
+        const audio = new Audio(audioSrc);
         audio.volume = 0.8;
+        
+        // 添加跨域支持（对于URL歌曲）
+        if (music.type === 'url') {
+            audio.crossOrigin = 'anonymous';
+        }
+        
+        // 加载错误处理
+        audio.addEventListener('error', (e) => {
+            console.error('音频加载错误:', e);
+            let errorMsg = '无法播放音频';
+            if (audio.error) {
+                switch (audio.error.code) {
+                    case 1: errorMsg = '用户中止了加载'; break;
+                    case 2: errorMsg = '网络错误，可能URL无效或跨域限制'; break;
+                    case 3: errorMsg = '解码错误，可能不是有效的音频文件'; break;
+                    case 4: errorMsg = 'URL无效或格式不支持'; break;
+                    default: errorMsg = '未知错误';
+                }
+            }
+            this.showNotification(`播放失败：${errorMsg}`, 'error');
+        });
         
         audio.addEventListener('loadedmetadata', () => {
             const duration = document.getElementById('duration');
