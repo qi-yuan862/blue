@@ -541,172 +541,38 @@ body {
   opacity: 0.95;
 }
 
-/* ===== 替换为：双贴图装饰消息气泡样式 ===== */
-
-/* 接收气泡 (对方消息) - 带双贴图装饰 */
+/* 接收气泡 (对方消息) */
 .message.other {
-  position: relative !important;
-  overflow: visible !important;
-  box-sizing: border-box !important;
-  padding: 10px 42px 10px 42px !important;
-  border-radius: 28px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: flex-start !important;
-  text-align: left !important;
-  max-width: 82% !important;
-  min-width: 0px !important;
-  min-height: 41px !important;
-  background-color: transparent !important;
-  background-image: radial-gradient(circle at 43% 31%, rgba(236, 236, 240, 0.31), rgba(219, 219, 222, 0.31)) !important;
-  background-position: center !important;
-  background-size: cover !important;
-  background-repeat: no-repeat !important;
-  box-shadow: -14px 5px 40px rgba(0, 0, 0, 0.18), inset -5px 1px 13px rgba(255, 255, 255, 0.4), inset 5px -1px 13px rgba(0, 0, 0, 0.75) !important;
+  background: linear-gradient(145deg, rgba(255,255,255,0.5), rgba(214,229,244,0.35)) !important;
+  backdrop-filter: blur(18px) saturate(108%);
+  -webkit-backdrop-filter: blur(18px) saturate(108%);
+  border: 1px solid rgba(255,255,255,0.55) !important;
   color: #6f7b86 !important;
-  line-height: 1.55 !important;
-  letter-spacing: 0.02em !important;
-  word-break: break-word !important;
-  z-index: 10 !important;
-  border: 0px solid transparent !important;
-  outline: 1px solid rgba(207, 207, 207, 0.5) !important;
-  outline-offset: 0px !important;
+  border-radius: 24px !important;
+  padding: 8px 28px 8px 16px !important;
+  box-shadow: 
+    0 6px 14px rgba(0,0,0,0.07),
+    0 2px 4px rgba(0,0,0,0.04),
+    inset 0 1px 2px rgba(255,255,255,0.9),
+    inset 0 -1px 3px rgba(210,225,240,0.25) !important;
+  position: relative;
 }
 
-/* 发送气泡 (自己消息) - 带双贴图装饰 */
+/* 发送气泡 (自己消息) */
 .message.self {
-  position: relative !important;
-  overflow: visible !important;
-  box-sizing: border-box !important;
-  padding: 10px 42px 10px 42px !important;
-  border-radius: 28px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: flex-start !important;
-  text-align: left !important;
-  max-width: 82% !important;
-  min-width: 0px !important;
-  min-height: 41px !important;
-  background-color: transparent !important;
-  background-image: radial-gradient(circle at 43% 31%, rgba(220, 220, 225, 0.35), rgba(200, 200, 205, 0.35)) !important;
-  background-position: center !important;
-  background-size: cover !important;
-  background-repeat: no-repeat !important;
-  box-shadow: -14px 5px 40px rgba(0, 0, 0, 0.18), inset -5px 1px 13px rgba(255, 255, 255, 0.4), inset 5px -1px 13px rgba(0, 0, 0, 0.75) !important;
+  background: linear-gradient(145deg, rgba(236,245,255,0.48), rgba(204,221,241,0.34)) !important;
+  backdrop-filter: blur(18px) saturate(108%);
+  -webkit-backdrop-filter: blur(18px) saturate(108%);
+  border: 1px solid rgba(255,255,255,0.55) !important;
   color: #5e6a75 !important;
-  line-height: 1.55 !important;
-  letter-spacing: 0.02em !important;
-  word-break: break-word !important;
-  z-index: 10 !important;
-  border: 0px solid transparent !important;
-  outline: 1px solid rgba(190, 190, 190, 0.5) !important;
-  outline-offset: 0px !important;
-}
-
-/* 底部装饰图片 - 圆形小徽标 (通用) */
-.message::after {
-  content: '' !important;
-  position: absolute !important;
-  width: 45px !important;
-  height: 45px !important;
-  background-image: url('https://litter.catbox.moe/k48ivymvdiggwmdb.png') !important;
-  background-size: contain !important;
-  background-repeat: no-repeat !important;
-  opacity: 1 !important;
-  bottom: 0;
-  z-index: 20 !important;
-  pointer-events: none !important;
-}
-
-/* 顶部装饰图片 - 大贴纸 (通用) */
-.message::before {
-  content: '' !important;
-  position: absolute !important;
-  width: 58px !important;
-  height: 58px !important;
-  background-image: url('https://files.catbox.moe/90j2kt.png') !important;
-  background-size: contain !important;
-  background-repeat: no-repeat !important;
-  opacity: 1 !important;
-  top: 0;
-  z-index: 20 !important;
-  pointer-events: none !important;
-  border: none !important;
-  background-color: transparent !important;
-}
-
-/* 自己发送的贴图位置 */
-.message.self::after {
-  right: 0;
-  transform: translate(26px, 10.5px) rotate(0deg) !important;
-}
-
-.message.self::before {
-  left: 0;
-  transform: translate(-13px, -7.5px) rotate(-19deg) !important;
-}
-
-/* 对方发送的贴图位置 */
-.message.other::after {
-  left: 0;
-  transform: translate(-14px, 10.5px) rotate(0deg) !important;
-}
-
-.message.other::before {
-  right: 0;
-  transform: translate(13px, -7.5px) rotate(19deg) !important;
-}
-
-/* 夜间模式适配 */
-.night-mode .message.other,
-.night-mode .message.self {
-  background-image: radial-gradient(circle at 43% 31%, rgba(30, 30, 30, 0.8), rgba(20, 20, 20, 0.9)) !important;
-  outline: 1px solid rgba(100, 100, 100, 0.5) !important;
-  box-shadow: -14px 5px 40px rgba(0, 0, 0, 0.4), inset -5px 1px 13px rgba(100, 100, 100, 0.2), inset 5px -1px 13px rgba(0, 0, 0, 0.9) !important;
-}
-
-.night-mode .message.other {
-  color: #e0e0e0 !important;
-}
-
-.night-mode .message.self {
-  color: #e0e0e0 !important;
-  background-image: radial-gradient(circle at 43% 31%, rgba(20, 20, 20, 0.9), rgba(10, 10, 10, 0.95)) !important;
-}
-
-/* 移动端适配 */
-@media (max-width: 768px) {
-  .message.other,
-  .message.self {
-    padding: 8px 32px 8px 32px !important;
-    max-width: 85% !important;
-  }
-  
-  .message::after {
-    width: 35px !important;
-    height: 35px !important;
-  }
-  
-  .message::before {
-    width: 45px !important;
-    height: 45px !important;
-  }
-  
-  .message.self::after {
-    transform: translate(20px, 8px) rotate(0deg) !important;
-  }
-  
-  .message.self::before {
-    transform: translate(-10px, -5px) rotate(-19deg) !important;
-  }
-  
-  .message.other::after {
-    transform: translate(-10px, 8px) rotate(0deg) !important;
-  }
-  
-  .message.other::before {
-    transform: translate(10px, -5px) rotate(19deg) !important;
-  }
+  border-radius: 24px !important;
+  padding: 8px 28px 8px 28px !important;
+  box-shadow: 
+    0 6px 14px rgba(0,0,0,0.07),
+    0 2px 4px rgba(0,0,0,0.04),
+    inset 0 1px 2px rgba(255,255,255,0.9),
+    inset 0 -1px 3px rgba(190,210,230,0.25) !important;
+  position: relative;
 }
 
 .message-time {
@@ -717,8 +583,6 @@ body {
   justify-content: space-between;
   align-items: center;
   gap: 6px;
-  flex-wrap: nowrap !important;      /* 新增：禁止换行 */
-  white-space: nowrap !important;     /* 新增：禁止文本换行 */
 }
 
 /* ===== 修改：消息操作菜单按钮 - 改为消息气泡质感 ===== */
@@ -781,8 +645,6 @@ body {
   align-items: center;
   gap: 2px;
   font-size: 0.65rem;
-  flex-wrap: nowrap !important;      /* 新增：禁止换行 */
-  white-space: nowrap !important;     /* 新增：禁止文本换行 */
 }
 
 .status-check {
@@ -805,8 +667,6 @@ body {
   display: flex;
   align-items: center;
   gap: 3px;
-  white-space: nowrap !important;     /* 新增：禁止换行 */
-  display: inline-block !important;   /* 新增：保持内联块，避免换行 */
 }
 
 /* 引用消息样式 */
